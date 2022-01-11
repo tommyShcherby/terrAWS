@@ -17,7 +17,7 @@ resource "aws_vpc" "tommys_exam_vpc" {
   cidr_block = "192.168.100.0/24"
   instance_tenancy = "default"
   tags = {
-    Name = "TommysSyncronExamMess"
+    Name = "TommysExamMess"
   }
 }
 
@@ -66,7 +66,7 @@ resource "aws_subnet" "tommys_exam_subnet" {
   cidr_block = "192.168.100.32/28"
   vpc_id = aws_vpc.tommys_exam_vpc.id
   tags = {
-    Name = "TommysSyncronExamMess"
+    Name = "TommysExamMess"
   }
 }
 
@@ -78,14 +78,23 @@ resource "aws_network_interface" "soo_jenky_interface" {
     device_index = 0 # This might cause an issue if the instance gets another interface automatically.
   }
   tags = {
-    Name = "TommysSyncronExamMess"
+    Name = "TommysExamMess"
+  }
+}
+
+data "aws_ami" "standard_al2" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
   }
 }
 
 resource "aws_instance" "soo_jenky" {
-  ami = <the image goes here>
+  ami = data.aws_ami.standard_al2.id
   instance_type "t3.micro" #Nitro system for the win!
   tags = {
-    Name = "TommysSyncronExamMess"
+    Name = "TommysExamMess"
   }
 }
